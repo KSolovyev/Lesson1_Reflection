@@ -14,6 +14,8 @@ public class Application {
     public static void main(String[] args) throws Exception {
         final Server server = new Server(PORT);
         final ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        final ServletHolder servletHolder = new ServletHolder(new UserServlet());
+        servletContextHandler.addServlet(servletHolder, "/api/user");
         server.setHandler(servletContextHandler);
         server.start();
         server.join();
