@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-/**
- * Created by Solovyev on 09/02/2017.
- */
 public class UserServlet extends HttpServlet {
 
     private UserHandler handler;
@@ -19,6 +16,9 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (handler == null) {
             try {
+                //Если бы у UserHandler конструктор зависил бы от каких-то аргументов, мы бы могли
+                //получить их с помощью Constructor.getParameters() и перед вызовом найти или сконструировать уже их.
+                //Это называется dependency injection или, коротко, DI
                 final Constructor<UserHandler> constructor = UserHandler.class.getConstructor();
                 handler = constructor.newInstance();
             } catch (ReflectiveOperationException e) {
@@ -27,6 +27,7 @@ public class UserServlet extends HttpServlet {
         }
         final String msg = req.getParameter("msg");
         try {
+            //Этот метод мы можем найти не только по имени, но и, например, через аннотацию. И здесь так же возможно использовать DI
             final Method handle = UserHandler.class.getMethod("handle", String.class, HttpServletResponse.class);
             handle.invoke(handler, msg, resp);
         } catch (ReflectiveOperationException e) {

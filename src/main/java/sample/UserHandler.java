@@ -3,9 +3,6 @@ package sample;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by Solovyev on 09/02/2017.
- */
 public class UserHandler {
 
     public static final int OK_200 = 200;
